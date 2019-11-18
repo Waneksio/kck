@@ -1,5 +1,5 @@
 from matplotlib import pyplot as plt
-from skimage import data, io, filters, exposure
+from skimage import io
 
 
 class ImReader:
