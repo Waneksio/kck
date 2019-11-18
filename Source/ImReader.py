@@ -1,7 +1,5 @@
-import numpy as np
 from matplotlib import pyplot as plt
 from skimage import data, io, filters, exposure
-import skimage
 
 
 class ImReader:
@@ -11,7 +9,7 @@ class ImReader:
         self.image = self.readImage(imagePath)
 
     def readImage(self, imagePath):
-        return io.imread('notes.jpg')
+        return io.imread(imagePath)
 
     def showImage(self):
         plt.figure(figsize=(10, 10))
@@ -25,8 +23,3 @@ class ImReader:
                     pixel = 255
                 else:
                     pixel = 0
-
-
-if __name__ == "__main__":
-    NewImage = ImReader("notes.jpg")
-    NewImage.showImage()
