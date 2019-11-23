@@ -1,8 +1,13 @@
-from ImReader import ImReader
-from LineDetector import LineDetector
+from ImReader import *
+from LineDetector import *
+from ShapeDetector import *
 
 if __name__ == "__main__":
-    newImage = ImReader('E:/moje/kodziki/python/notesReader/Resources/notes2.jpg')
-    newDetector = LineDetector(newImage)
-    newDetector.showNoLinesImage()
-    newDetector.showNoLinesImageDilatation()
+    NewImage = ImReader("../Resources/notes3.jpg")
+    NewLineDetector = LineDetector(NewImage)
+    NewDetector = ShapeDetector(NewLineDetector.dilatation(NewLineDetector.noLinesImage))
+    NewDetector.findCentroid()
+    print(NewDetector.centroids)
+    plt.figure(figsize=(10, 10))
+    plt.imshow(NewDetector.image)
+    plt.show()
