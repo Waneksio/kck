@@ -8,6 +8,7 @@ import cv2
 
 class ImReader:
     image = []
+    binImage = []
     gray = []
     edges = []
     imgHeight = 0
@@ -19,9 +20,19 @@ class ImReader:
         self.gray = self.BGR2GRAY(self.image)
         self.edges = self.BGR2EDGES(self.image)
         self.imgHeight, self.imgWidth, self.imgChannels = self.image.shape
+        self.binImage = self.gray
+        self.binImageConvert()
+
+    def binImageConvert(self):
+        for i in range(len(self.binImage)):
+            for j in range(len(self.binImage[i])):
+                if self.binImage[i][j] > 177:
+                    self.binImage[i][j] = 255
+                else:
+                    self.binImage[i][j] = 0
 
     def readImage(self, imagePath):
-        return io.imread('notes.jpg')
+        return io.imread(imagePath)
         return cv2.imread(imagePath)
 
     def BGR2GRAY(self, img):
@@ -30,6 +41,9 @@ class ImReader:
     def BGR2EDGES(self, img):
         grayImg = self.BGR2GRAY(img)
         return cv2.Canny(grayImg, 50, 150, apertureSize=3)
+
+    def getImage(self):
+        return self.binImage
 
     def showImage(self):
         plt.figure(figsize=(10, 10))

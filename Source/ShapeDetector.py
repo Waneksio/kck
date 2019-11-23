@@ -3,7 +3,7 @@ import random
 from matplotlib import pyplot as plt
 from skimage import data, io, filters, exposure
 import skimage
-from .Source/ImReader import *
+from ImReader import *
 from skimage import measure
 import cv2
 
@@ -15,6 +15,7 @@ class ShapeDetector:
 
     def __init__(self, image):
         self.image = image
+        print(image)
         self.findContours()
 
     def findContours(self):
@@ -42,7 +43,7 @@ class ShapeDetector:
 
 
 if __name__ == "__main__":
-    NewImage = ImReader("test.png")
+    NewImage = ImReader("../Resources/test.png")
     NewDetector = ShapeDetector(NewImage.getImage())
     NewDetector.findCentroid()
     print(NewDetector.centroids)
