@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 from skimage import io
+from skimage import morphology as mp
 
 class LineDetector:
     image = []
@@ -55,6 +56,12 @@ class LineDetector:
                 cv2.line(noLinesImage, (x1, y1), (x2, y2), (255, 255, 255), 3)
         return noLinesImage
 
+    def dilatation(self, img):
+        dilatationImage = img.copy()
+        for i in range(3):
+            dilatationImage = mp.erosion(dilatationImage)
+        return dilatationImage
+
     def showLinesImage(self):
         plt.figure(figsize=(10, 10))
         io.imshow(self.linesImage)
@@ -63,4 +70,9 @@ class LineDetector:
     def showNoLinesImage(self):
         plt.figure(figsize=(10, 10))
         io.imshow(self.noLinesImage)
+        plt.show()
+
+    def showNoLinesImageDilatation(self):
+        plt.figure(figsize=(10, 10))
+        io.imshow(self.dilatation(self.noLinesImage))
         plt.show()
