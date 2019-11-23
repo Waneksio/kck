@@ -4,6 +4,7 @@ from matplotlib import pyplot as plt
 from skimage import data, io, filters, exposure
 import skimage
 from ImReader import *
+from LineDetector import *
 from skimage import measure
 import cv2
 
@@ -15,7 +16,6 @@ class ShapeDetector:
 
     def __init__(self, image):
         self.image = image
-        print(image)
         self.findContours()
 
     def findContours(self):
@@ -43,8 +43,9 @@ class ShapeDetector:
 
 
 if __name__ == "__main__":
-    NewImage = ImReader("../Resources/test.png")
-    NewDetector = ShapeDetector(NewImage.getImage())
+    NewImage = ImReader("../Resources/notes3.jpg")
+    NewLineDetector = LineDetector(NewImage)
+    NewDetector = ShapeDetector(NewLineDetector.dilatation(NewLineDetector.noLinesImage))
     NewDetector.findCentroid()
     print(NewDetector.centroids)
     plt.figure(figsize=(10, 10))

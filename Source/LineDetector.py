@@ -12,17 +12,17 @@ class LineDetector:
 
     rhoAccuracy = 1
     thetaAccuracy = np.pi / 180
-    treshold = 800
+    threshold = 800
     linesColor = (0, 0, 255)
 
     def __init__(self, img):
         self.image = img
         self.lines = self.findLines()
         self.linesImage = self.drawLines(self.image.image)
-        self.noLinesImage = self.removeLines(self.image.image)
+        self.noLinesImage = self.removeLines(self.image.getBinImage())
 
     def findLines(self):
-        return cv2.HoughLines(self.image.edges, self.rhoAccuracy, self.thetaAccuracy, self.treshold)
+        return cv2.HoughLines(self.image.edges, self.rhoAccuracy, self.thetaAccuracy, self.threshold)
 
     def drawLines(self, img):
         linesImage = img.copy()
@@ -58,7 +58,7 @@ class LineDetector:
 
     def dilatation(self, img):
         dilatationImage = img.copy()
-        for i in range(3):
+        for i in range(5):
             dilatationImage = mp.erosion(dilatationImage)
         return dilatationImage
 

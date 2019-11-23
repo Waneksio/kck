@@ -32,7 +32,7 @@ class ImReader:
                     self.binImage[i][j] = 0
 
     def readImage(self, imagePath):
-        return io.imread(imagePath)
+        #return io.imread(imagePath)
         return cv2.imread(imagePath)
 
     def BGR2GRAY(self, img):
@@ -42,21 +42,13 @@ class ImReader:
         grayImg = self.BGR2GRAY(img)
         return cv2.Canny(grayImg, 50, 150, apertureSize=3)
 
-    def getImage(self):
+    def getBinImage(self):
         return self.binImage
 
     def showImage(self):
         plt.figure(figsize=(10, 10))
         io.imshow(self.image)
         plt.show()
-
-    def wbConvert(self):
-        for pixelArray in self.image:
-            for pixel in pixelArray:
-                if pixel > 200:
-                    pixel = 255
-                else:
-                    pixel = 0
 
     def showGray(self):
         plt.figure(figsize=(10, 10))
