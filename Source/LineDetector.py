@@ -20,6 +20,7 @@ class LineDetector:
         self.lines = self.findLines()
         self.linesImage = self.drawLines(self.image.image)
         self.noLinesImage = self.removeLines(self.image.getBinImage())
+        self.image = self.image.getBinImage
 
     def findLines(self):
         return cv2.HoughLines(self.image.edges, self.rhoAccuracy, self.thetaAccuracy, self.threshold)
@@ -53,12 +54,18 @@ class LineDetector:
                 x2 = int(x0 - self.image.imgWidth * (-b))
                 y2 = int(y0 - self.image.imgHeight * (a))
 
-                cv2.line(noLinesImage, (x1, y1), (x2, y2), (255, 255, 255), 3)
+                #cv2.line(noLinesImage, (x1, y1), (x2, y2), (255, 255, 255), 3)
+
+        noLinesImage = mp.dilation(noLinesImage)
+        noLinesImage = mp.dilation(noLinesImage)
+        noLinesImage = mp.dilation(noLinesImage)
+        noLinesImage = mp.dilation(noLinesImage)
+        noLinesImage = mp.erosion(noLinesImage)
         return noLinesImage
 
     def dilatation(self, img):
         dilatationImage = img.copy()
-        for i in range(5):
+        for i in range(0):
             dilatationImage = mp.erosion(dilatationImage)
         return dilatationImage
 
