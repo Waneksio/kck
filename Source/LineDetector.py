@@ -3,6 +3,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from skimage import io
 from skimage import morphology as mp
+from Line import *
 
 class LineDetector:
     imageReader = []
@@ -10,9 +11,9 @@ class LineDetector:
     linesImage = []
     noLinesImage = []
 
-    rhoAccuracy = 1
-    thetaAccuracy = np.pi / 180
-    threshold = 800
+    rhoAccuracy = 0.5
+    thetaAccuracy = np.pi / 360
+    threshold = 165
     linesColor = (0, 0, 255)
 
     def __init__(self, imgR):
@@ -22,39 +23,50 @@ class LineDetector:
         self.noLinesImage = self.removeLines(self.imageReader.binImage)
 
     def findLines(self):
-        return cv2.HoughLines(self.imageReader.edges, self.rhoAccuracy, self.thetaAccuracy, self.threshold)
+        lines = cv2.HoughLines(self.imageReader.edges, self.rhoAccuracy, self.thetaAccuracy, self.threshold)
+        lines = self.linesConvert(lines)
+        return lines
+
+    def linesConvert(self, lines):
+        newLines = []
+        for l in lines:
+            print(l)
+            for rho, theta in l:
+                if(theta == 0):
+                    a = 0
+                    b = 0
+                    x1 = int(rho)
+                    y1 = 0
+                    x2 = int(rho)
+                    y2 = int(self.imageReader.imgHeight)
+                elif (1.57 < theta < 1.5716):
+                    a = 0
+                    b = rho / np.sin(theta)
+                    x1 = 0
+                    y1 = int(b)
+                    x2 = int(self.imageReader.imgWidth)
+                    y2 = int((a * x2) + b)
+                else:
+                    a = -1 / np.tan(theta)
+                    b = rho / np.sin(theta)
+                    x1 = 0
+                    y1 = int(b)
+                    x2 = int(self.imageReader.imgWidth)
+                    y2 = int((a * x2) + b)
+                newLine = Line((x1, y1), (x2, y2), a, b)
+                newLines.append(newLine)
+        return newLines
 
     def drawLines(self, img):
         linesImage = img.copy()
-        for l in self.lines:
-            for rho, theta in l:
-                a = np.cos(theta)
-                b = np.sin(theta)
-                x0 = a * rho
-                y0 = b * rho
-                x1 = int(x0 + self.imageReader.imgWidth * (-b))
-                y1 = int(y0 + self.imageReader.imgHeight * (a))
-                x2 = int(x0 - self.imageReader.imgWidth * (-b))
-                y2 = int(y0 - self.imageReader.imgHeight * (a))
-
-                cv2.line(linesImage, (x1, y1), (x2, y2), self.linesColor, 2)
+        for line in self.lines:
+            cv2.line(linesImage, line.p1, line.p2, self.linesColor, 2)
         return linesImage
 
     def removeLines(self, img):
         noLinesImage = img.copy()
-        for l in self.lines:
-            for rho, theta in l:
-                a = np.cos(theta)
-                b = np.sin(theta)
-                x0 = a * rho
-                y0 = b * rho
-                x1 = int(x0 + self.imageReader.imgWidth * (-b))
-                y1 = int(y0 + self.imageReader.imgHeight * (a))
-                x2 = int(x0 - self.imageReader.imgWidth * (-b))
-                y2 = int(y0 - self.imageReader.imgHeight * (a))
-
-                cv2.line(noLinesImage, (x1, y1), (x2, y2), (255, 255, 255), 3)
-
+        for line in self.lines:
+            cv2.line(noLinesImage, line.p1, line.p2, (255, 255, 255), 3)
         noLinesImage = self.dilatation(noLinesImage)
         return noLinesImage
 
