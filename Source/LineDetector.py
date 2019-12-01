@@ -30,7 +30,6 @@ class LineDetector:
     def linesConvert(self, lines):
         newLines = []
         for l in lines:
-            print(l)
             for rho, theta in l:
                 if(theta == 0):
                     a = 0
