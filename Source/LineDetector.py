@@ -10,22 +10,56 @@ class LineDetector:
     lines = []
     linesImage = []
     noLinesImage = []
+    rotatedImage = []
 
     rhoAccuracy = 0.5
     thetaAccuracy = np.pi / 360
     threshold = 165
     linesColor = (0, 0, 255)
+    angle = 0
 
     def __init__(self, imgR):
         self.imageReader = imgR
         self.lines = self.findLines()
         self.linesImage = self.drawLines(self.imageReader.image)
         self.noLinesImage = self.removeLines(self.imageReader.binImage)
+        self.angle = self.findAngle()
+        self.rotatedImage = self.rotate_bound(self.imageReader.image, self.angle)
+
+    def findAngle(self):
+        lines = cv2.HoughLines(self.imageReader.edges, self.rhoAccuracy, self.thetaAccuracy, self.threshold)
+        angle = lines[0][0][1]
+        angle = np.rad2deg(angle) - 90
+        return -angle
 
     def findLines(self):
         lines = cv2.HoughLines(self.imageReader.edges, self.rhoAccuracy, self.thetaAccuracy, self.threshold)
         lines = self.linesConvert(lines)
         return lines
+
+    def rotate_bound(self, img, angle):
+        # grab the dimensions of the image and then determine the
+        # center
+        (h, w) = img.shape[:2]
+        (cX, cY) = (w // 2, h // 2)
+
+        # grab the rotation matrix (applying the negative of the
+        # angle to rotate clockwise), then grab the sine and cosine
+        # (i.e., the rotation components of the matrix)
+        M = cv2.getRotationMatrix2D((cX, cY), -angle, 1.0)
+        cos = np.abs(M[0, 0])
+        sin = np.abs(M[0, 1])
+
+        # compute the new bounding dimensions of the image
+        nW = int((h * sin) + (w * cos))
+        nH = int((h * cos) + (w * sin))
+
+        # adjust the rotation matrix to take into account translation
+        M[0, 2] += (nW / 2) - cX
+        M[1, 2] += (nH / 2) - cY
+
+        # perform the actual rotation and return the image
+        return cv2.warpAffine(img, M, (nW, nH))
 
     def linesConvert(self, lines):
         newLines = []
@@ -83,4 +117,9 @@ class LineDetector:
     def showNoLinesImage(self):
         plt.figure(figsize=(10, 10))
         io.imshow(self.noLinesImage)
+        plt.show()
+
+    def showRotatedImage(self):
+        plt.figure(figsize=(10, 10))
+        io.imshow(self.rotatedImage)
         plt.show()
