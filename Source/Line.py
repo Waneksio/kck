@@ -9,3 +9,6 @@ class Line:
         self.p2 = p2
         self.a = a
         self.b = b
+
+    def valueOf(self, arg):
+        return self.a * arg + self.b

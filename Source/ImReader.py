@@ -33,10 +33,10 @@ class ImReader:
         binImage = img.copy()
         for i in range(len(binImage)):
             for j in range(len(binImage[i])):
-                if binImage[i][j] > 170:
-                    binImage[i][j] = 255
-                else:
+                if binImage[i][j] > 150:
                     binImage[i][j] = 0
+                else:
+                    binImage[i][j] = 255
         return binImage
 
     def showImage(self):

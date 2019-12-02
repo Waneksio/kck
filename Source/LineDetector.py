@@ -5,6 +5,7 @@ from skimage import io
 from skimage import morphology as mp
 from Line import *
 
+
 class LineDetector:
     imageReader = []
     lines = []
@@ -13,7 +14,7 @@ class LineDetector:
 
     rhoAccuracy = 0.5
     thetaAccuracy = np.pi / 360
-    threshold = 165
+    threshold = 450
     linesColor = (0, 0, 255)
 
     def __init__(self, imgR):
@@ -23,17 +24,16 @@ class LineDetector:
         self.noLinesImage = self.removeLines(self.imageReader.binImage)
 
     def findLines(self):
-        lines = cv2.HoughLines(self.imageReader.edges, self.rhoAccuracy, self.thetaAccuracy, self.threshold)
+        lines = cv2.HoughLines(self.imageReader.binImage, self.rhoAccuracy, self.thetaAccuracy, self.threshold)
         lines = self.linesConvert(lines)
         return lines
 
     def linesConvert(self, lines):
         newLines = []
         for l in lines:
-            print(l)
             for rho, theta in l:
                 if(theta == 0):
-                    a = 0
+                    a = self.imageReader.imgHeight
                     b = 0
                     x1 = int(rho)
                     y1 = 0
@@ -72,7 +72,7 @@ class LineDetector:
 
     def dilatation(self, img):
         dilatationImage = img.copy()
-        for i in range(4):
+        for i in range(7):
             dilatationImage = mp.erosion(dilatationImage)
         return dilatationImage
 
