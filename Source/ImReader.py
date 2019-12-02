@@ -36,8 +36,9 @@ class ImReader:
         norm[norm[:,:] > 1] = 1
         norm[norm[:,:] < 0] = 0
 
-        perc2 = 15
-        limit = np.percentile(norm, perc2)
+        #perc2 = 5
+        #limit = np.percentile(norm, perc2)
+        limit = 0.8
         norm[norm[:,:] >= limit] = 255
         norm[norm[:,:] < limit] = 0
 
