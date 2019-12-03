@@ -14,7 +14,7 @@ class LineDetector:
 
     rhoAccuracy = 0.5
     thetaAccuracy = np.pi / 360
-    threshold = 450
+    threshold = 350
     linesColor = (0, 0, 255)
 
     def __init__(self, imgR):

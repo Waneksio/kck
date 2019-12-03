@@ -25,10 +25,12 @@ if __name__ == "__main__":
     NewLineDetector = LineDetector(NewImage)
     NewLineDetector.showNoLinesImage()"""
 
-    NewImage = ImReader("../Resources/notes4.jpg")
+    NewImage = ImReader("../Resources/notes5.jpg")
     # NewImage.showBinImage()
     NewLineDetector = LineDetector(NewImage)
     # NewLineDetector.showNoLinesImage()
+    cv2.imshow("image", NewLineDetector.noLinesImage)
+    cv2.waitKey()
     NewDetector = ShapeDetector(NewLineDetector.noLinesImage)
     # cv2.imshow("image", NewDetector.image)
     # cv2.waitKey()

@@ -37,10 +37,10 @@ class ShapeDetector:
         toDelete = []
 
         for i in range(len(self.areas)):
-            if self.areas[i] < median - 0.1 * deviation:
+            if self.areas[i] < median - 0.5 * deviation:
                 toDelete.append(i)
 
-            if self.areas[i] > median + 0.9 * deviation:
+            if self.areas[i] > median + 2 * deviation:
                 toDelete.append(i)
 
         while len(toDelete) != 0:
@@ -71,6 +71,7 @@ class ShapeDetector:
                 cY = int(M["m01"] / M["m00"])
                 self.centroids.append((cX, cY))
                 self.image[cY][cX] = 0
+        print(self.centroids)
 
     def wb_bw(self, image):
         for i in image:
