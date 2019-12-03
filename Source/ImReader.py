@@ -1,5 +1,6 @@
 from matplotlib import pyplot as plt
 from skimage import io
+import numpy as np
 import cv2
 
 
@@ -15,8 +16,8 @@ class ImReader:
     def __init__(self, imagePath):
         self.image = self.readImage(imagePath)
         self.gray = self.BGR2GRAY(self.image)
-        self.edges = self.BGR2EDGES(self.image)
-        self.binImage = self.binImageConvert(self.gray)
+        self.binImage = self.GRAY2BIN(self.gray)
+        self.edges = self.BIN2EDGES(self.binImage)
         self.imgHeight, self.imgWidth, self.imgChannels = self.image.shape
 
     def readImage(self, imagePath):
@@ -25,19 +26,14 @@ class ImReader:
     def BGR2GRAY(self, img):
         return cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    def BGR2EDGES(self, img):
-        grayImg = self.BGR2GRAY(img)
-        return cv2.Canny(grayImg, 50, 150, apertureSize=3)
-
-    def binImageConvert(self, img):
+    def GRAY2BIN(self, img):
         binImage = img.copy()
-        for i in range(len(binImage)):
-            for j in range(len(binImage[i])):
-                if binImage[i][j] > 150:
-                    binImage[i][j] = 0
-                else:
-                    binImage[i][j] = 255
-        return binImage
+
+                    binImage[i][j] = 0        return binImage
+
+    def BIN2EDGES(self, bImg):
+        img = bImg.copy()
+        return cv2.Canny(img, 50, 150, apertureSize=3)
 
     def showImage(self):
         plt.figure(figsize=(10, 10))
@@ -56,7 +52,7 @@ class ImReader:
 
     def showBinImage(self):
         plt.figure(figsize=(10, 10))
-        io.imshow(self.binImage)
+        io.imshow(self.binImage, cmap='gray')
         plt.show()
 
 
