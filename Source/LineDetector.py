@@ -12,10 +12,11 @@ class LineDetector:
     linesImage = []
     noLinesImage = []
     rotatedImage = []
+    simpleLines = []
 
     rhoAccuracy = 0.5
     thetaAccuracy = np.pi / 360
-    threshold = 350
+    threshold = 650
     linesColor = (0, 0, 255)
     angle = 0
 
@@ -28,14 +29,18 @@ class LineDetector:
         self.rotatedImage = self.rotate_bound(self.imageReader.image, self.angle)
 
     def findAngle(self):
-        lines = cv2.HoughLines(self.imageReader.edges, self.rhoAccuracy, self.thetaAccuracy, self.threshold)
+        lines = self.simpleLines
         angle = lines[0][0][1]
         angle = np.rad2deg(angle) - 90
         return -angle
 
     def findLines(self):
-        lines = cv2.HoughLines(self.imageReader.binImage, self.rhoAccuracy, self.thetaAccuracy, self.threshold)
-        lines = self.linesConvert(lines)
+        lines = []
+        while len(lines) < 5:
+            self.threshold -= 50
+            lines = cv2.HoughLines(self.imageReader.binImage, self.rhoAccuracy, self.thetaAccuracy, self.threshold)
+            self.simpleLines = lines
+            lines = self.linesConvert(lines)
         return lines
 
     def rotate_bound(self, img, angle):

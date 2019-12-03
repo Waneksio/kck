@@ -28,8 +28,20 @@ class ImReader:
 
     def GRAY2BIN(self, img):
         binImage = img.copy()
+        MIN = np.min(binImage)
+        MAX = np.max(binImage)
 
-                    binImage[i][j] = 0        return binImage
+        norm = (binImage - MIN) / (MAX - MIN)
+        norm[norm[:, :] > 1] = 1
+        norm[norm[:, :] < 0] = 0
+
+        perc2 = 15
+        limit = np.percentile(norm, perc2)
+        norm[norm[:, :] >= limit] = 255
+        norm[norm[:, :] < limit] = 0
+
+        binImage = np.uint8(norm)
+        return binImage
 
     def BIN2EDGES(self, bImg):
         img = bImg.copy()
