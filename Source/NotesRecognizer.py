@@ -25,7 +25,7 @@ class NotesRecognizer:
                     9: "D"}
 
     def __init__(self, LineDetector, ShpaeDetector):
-        image = Image.open("../Resources/notes5.jpg")
+        image = Image.open("../Resources/e1.jpg")
         draw = ImageDraw.Draw(image)
         color = 'rgb(255, 0, 255)'
         self.LineDetector = LineDetector
@@ -38,8 +38,8 @@ class NotesRecognizer:
             for line in staff:
                 print(line.b)
             print("--------------")
-        self.recognizeNote(draw, color)
-        image.save('notes_5.jpg')
+        #self.recognizeNote(draw, color)
+        #image.save('notes_1.jpg')
 
     def avgDistBetweenLines(self):
         self.getDistances(self.imageLines)

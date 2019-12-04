@@ -6,8 +6,10 @@ from NotesRecognizer import *
 if __name__ == "__main__":
     NewImage = ImReader("../Resources/easy/e1.jpg")
     NewDetector = LineDetector(NewImage)
-    NewDetector.showRotatedImage()
-    NewImage = ImReader("../Resources/easy/e2.jpg")
+    NewShapeDetector = ShapeDetector(NewImage.binImage)
+    NewRecognizer = NotesRecognizer(NewDetector, NewShapeDetector)
+    NewImage.showBinImage()
+    """NewImage = ImReader("../Resources/easy/e2.jpg")
     NewDetector = LineDetector(NewImage)
     NewDetector.showRotatedImage()
     NewImage = ImReader("../Resources/easy/e3.jpg")
@@ -21,4 +23,4 @@ if __name__ == "__main__":
     NewDetector.showRotatedImage()
     NewImage = ImReader("../Resources/easy/e6.jpg")
     NewDetector = LineDetector(NewImage)
-    NewDetector.showRotatedImage()
+    NewDetector.showRotatedImage()"""

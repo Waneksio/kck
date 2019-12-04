@@ -31,16 +31,15 @@ class ImReader:
         MIN = np.min(binImage)
         MAX = np.max(binImage)
 
-        norm = (binImage - MIN) / (MAX - MIN)
-        norm[norm[:, :] > 1] = 1
-        norm[norm[:, :] < 0] = 0
+        for i in range(len(binImage)):
+            for j in range(len(binImage[i])):
+                k = (binImage[i][j] - MIN) / (MAX - MIN)
+                if k < 0.5:
+                    binImage[i][j] = 255
+                else:
+                    binImage[i][j] = 0
 
-        perc2 = 15
-        limit = np.percentile(norm, perc2)
-        norm[norm[:, :] >= limit] = 255
-        norm[norm[:, :] < limit] = 0
-
-        binImage = np.uint8(norm)
+        #binImage = np.uint8(binImage)
         return binImage
 
     def BIN2EDGES(self, bImg):
@@ -64,7 +63,7 @@ class ImReader:
 
     def showBinImage(self):
         plt.figure(figsize=(10, 10))
-        io.imshow(self.binImage, cmap='gray')
+        io.imshow(self.binImage)
         plt.show()
 
 
