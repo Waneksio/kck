@@ -8,7 +8,6 @@ class ImReader:
     image = []
     binImage = []
     gray = []
-    edges = []
     imgHeight = 0
     imgWidth = 0
     imgChannels = 0
@@ -17,7 +16,7 @@ class ImReader:
         self.image = self.readImage(imagePath)
         self.gray = self.BGR2GRAY(self.image)
         self.binImage = self.GRAY2BIN(self.gray)
-        self.edges = self.BIN2EDGES(self.binImage)
+        self.binImageNegative = self.toNegative(self.binImage)
         self.imgHeight, self.imgWidth, self.imgChannels = self.image.shape
 
     def readImage(self, imagePath):
@@ -37,7 +36,7 @@ class ImReader:
         norm[norm[:,:] < 0] = 0
 
         if(np.average(norm) < 0.8):
-            perc = 7
+            perc = 12
             limit = np.percentile(norm, perc)
         else:
             limit = 0.8
@@ -52,6 +51,10 @@ class ImReader:
         img = bImg.copy()
         return cv2.Canny(img, 50, 150, apertureSize=3)
 
+    def toNegative(self, img):
+        res = 255 - img
+        return res
+
     def showImage(self):
         plt.figure(figsize=(10, 10))
         io.imshow(self.image)
@@ -60,11 +63,6 @@ class ImReader:
     def showGray(self):
         plt.figure(figsize=(10, 10))
         io.imshow(self.gray)
-        plt.show()
-
-    def showEdges(self):
-        plt.figure(figsize=(10, 10))
-        io.imshow(self.edges)
         plt.show()
 
     def showBinImage(self):
