@@ -120,16 +120,16 @@ class LineDetector:
         for line in self.lines:
             point1 = (0, line.y1)
             point2 = (self.rotatedImageWidth, line.y2)
-            cv2.line(noLinesImage, point1, point2, (255, 255, 255), 5)
+            cv2.line(noLinesImage, point1, point2, (0, 0, 0), 8)
         noLinesImage = self.dilatation(noLinesImage)
         return noLinesImage
 
     def dilatation(self, img):
         dilatationImage = img.copy()
-        for i in range(9):
-            dilatationImage = mp.erosion(dilatationImage)
-        for i in range(3):
+        for i in range(5):
             dilatationImage = mp.dilation(dilatationImage)
+        for i in range(0):
+            dilatationImage = mp.erosion(dilatationImage)
         return dilatationImage
 
     def showLinesImage(self):
