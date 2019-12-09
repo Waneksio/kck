@@ -128,8 +128,6 @@ class LineDetector:
         dilatationImage = img.copy()
         for i in range(5):
             dilatationImage = mp.dilation(dilatationImage)
-        for i in range(0):
-            dilatationImage = mp.erosion(dilatationImage)
         return dilatationImage
 
     def showLinesImage(self):
