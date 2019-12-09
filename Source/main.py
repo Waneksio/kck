@@ -6,9 +6,10 @@ from NotesRecognizer import *
 if __name__ == "__main__":
     NewImage = ImReader("../Resources/easy/e1.jpg")
     NewDetector = LineDetector(NewImage)
-    NewShapeDetector = ShapeDetector(NewImage.binImage)
+    NewShapeDetector = ShapeDetector(NewDetector.noLinesImage)
     NewRecognizer = NotesRecognizer(NewDetector, NewShapeDetector)
-    NewImage.showBinImage()
+    NewDetector.showNoLinesImage()
+    # NewImage.showBinImage()
     """NewImage = ImReader("../Resources/easy/e2.jpg")
     NewDetector = LineDetector(NewImage)
     NewDetector.showRotatedImage()

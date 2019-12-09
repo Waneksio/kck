@@ -105,14 +105,14 @@ class LineDetector:
     def removeLines(self, img):
         noLinesImage = img.copy()
         for line in self.lines:
-            cv2.line(noLinesImage, line.p1, line.p2, (255, 255, 255), 3)
+            cv2.line(noLinesImage, line.p1, line.p2, (255, 255, 255), 1)
         noLinesImage = self.dilatation(noLinesImage)
         return noLinesImage
 
     def dilatation(self, img):
         dilatationImage = img.copy()
-        for i in range(7):
-            dilatationImage = mp.erosion(dilatationImage)
+        for i in range(1):
+            dilatationImage = mp.dilation(dilatationImage)
         return dilatationImage
 
     def showLinesImage(self):

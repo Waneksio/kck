@@ -31,15 +31,9 @@ class NotesRecognizer:
         self.LineDetector = LineDetector
         self.ShapeDetector = ShpaeDetector
         self.sortLines()
-        for line in self.imageLines:
-            print(line.b)
         self.avgDist = self.avgDistBetweenLines()
-        for staff in self.staffs:
-            for line in staff:
-                print(line.b)
-            print("--------------")
-        #self.recognizeNote(draw, color)
-        #image.save('notes_1.jpg')
+        self.recognizeNote(draw, color)
+        image.save('notes_1.jpg')
 
     def avgDistBetweenLines(self):
         self.getDistances(self.imageLines)
@@ -83,5 +77,5 @@ class NotesRecognizer:
                     elif staff[i].valueOf(centroid[0]) - self.avgDist * 1 / 4 > centroid[1] > staff[i].valueOf(centroid[0]) - self.avgDist * 3 / 4:
                         self.heights.append((centroid[0], centroid[1], self.heightsDict[i * 2 - 1]))
                         draw.text((centroid[0], centroid[1] - 20), self.heightsDict[i * 2 - 1], fill=color, font=self.font)
-                else:
-                    continue
+                    else:
+                        continue

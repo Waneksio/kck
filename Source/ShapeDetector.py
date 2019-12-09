@@ -36,12 +36,12 @@ class ShapeDetector:
         deviation = statistics.stdev(self.areas)
         toDelete = []
 
-        for i in range(len(self.areas)):
-            if self.areas[i] < median - 0.5 * deviation:
-                toDelete.append(i)
+        # for i in range(len(self.areas)):
+            # if self.areas[i] < median - 0.5 * deviation:
+                # toDelete.append(i)
 
-            if self.areas[i] > median + 2 * deviation:
-                toDelete.append(i)
+            # if self.areas[i] > median + 2 * deviation:
+                # toDelete.append(i)
 
         while len(toDelete) != 0:
             temp = toDelete.pop()
