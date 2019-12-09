@@ -26,11 +26,11 @@ class ShapeDetector:
         for contour in self.contours:
             self.areas.append(cv2.contourArea(contour))
 
-        for i in range(len(self.areas)):
-            if self.areas[i] == max(self.areas):
-                self.areas.pop(i)
-                self.contours.pop(i)
-                break
+        #for i in range(len(self.areas)):
+            #if self.areas[i] == max(self.areas):
+                #self.areas.pop(i)
+                #self.contours.pop(i)
+                #break
 
         median = statistics.median(self.areas)
         deviation = statistics.stdev(self.areas)
