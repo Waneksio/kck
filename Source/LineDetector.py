@@ -8,6 +8,7 @@ from Line import *
 class LineDetector:
     imageReader = []
     rotatedImage = []
+    rotated = []
     lines = []
     linesImage = []
     noLinesImage = []
@@ -25,10 +26,12 @@ class LineDetector:
         self.imageReader = imgR
         self.angle = self.findAngle()
         self.rotatedImage = self.rotate_bound(self.imageReader.binImageNegative, self.angle)
+        self.rotated = self.rotate_bound(self.imageReader.image, self.angle)
         self.rotatedImageHeight, self.rotatedImageWidth = self.rotatedImage.shape
         self.lines = self.findLines(self.rotatedImage)
         self.linesImage = self.drawLines(self.rotatedImage)
         self.noLinesImage = self.removeLines(self.rotatedImage)
+        self.rotatedAsFile()
 
     def findAngle(self):
         lines = cv2.HoughLines(self.imageReader.binImageNegative, self.rhoAccuracy, self.thetaAccuracy, self.threshold)
@@ -146,3 +149,8 @@ class LineDetector:
         plt.figure(figsize=(10, 10))
         io.imshow(self.rotatedImage)
         plt.show()
+
+    def rotatedAsFile(self):
+        filePath = "rotated"
+        cv2.imwrite("rotated.jpg", self.rotated)
+        return filePath
