@@ -15,7 +15,7 @@ class LineDetector:
 
     rhoAccuracy = 0.5
     thetaAccuracy = np.pi / 360
-    threshold = 300
+    threshold = 200
     linesColor = (0, 0, 255)
     angle = 0
 
@@ -76,7 +76,7 @@ class LineDetector:
                 flag = True
                 for r in newLinesRhos:
                     # delete lines describing the same line
-                    if(r - 12 <= rho <= r + 12):
+                    if(r - 5 <= rho <= r + 5):
                         flag = False
                     # delete lines describing with different angle
                     if(theta <= (np.pi / 2) - np.deg2rad(2) or (np.pi / 2) + np.deg2rad(2) <= theta):
@@ -115,7 +115,7 @@ class LineDetector:
         for line in self.lines:
             point1 = (0, line.y1)
             point2 = (self.rotatedImageWidth, line.y2)
-            cv2.line(linesImage, point1, point2, self.linesColor, 2)
+            cv2.line(linesImage, point1, point2, self.linesColor, 1)
         return linesImage
 
     def removeLines(self, img):
@@ -123,13 +123,17 @@ class LineDetector:
         for line in self.lines:
             point1 = (0, line.y1)
             point2 = (self.rotatedImageWidth, line.y2)
-            cv2.line(noLinesImage, point1, point2, (0, 0, 0), 8)
+            cv2.line(noLinesImage, point1, point2, (0, 0, 0), 1)
         noLinesImage = self.dilatation(noLinesImage)
         return noLinesImage
 
     def dilatation(self, img):
         dilatationImage = img.copy()
+        for i in range(1):
+            dilatationImage = mp.dilation(dilatationImage)
         for i in range(5):
+            dilatationImage = mp.erosion(dilatationImage)
+        for i in range(2):
             dilatationImage = mp.dilation(dilatationImage)
         return dilatationImage
 

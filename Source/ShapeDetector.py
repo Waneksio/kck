@@ -17,7 +17,7 @@ class ShapeDetector:
     areas = []
 
     def __init__(self, image):
-        self.image = self.wb_bw(image)
+        self.image = image
         self.findContours()
         self.removeTrashes()
         self.findCentroid()
@@ -74,11 +74,9 @@ class ShapeDetector:
         print(self.centroids)
 
     def wb_bw(self, image):
-        for i in image:
-            for j in i:
-                if j == 255:
-                    j = 0
-                else:
-                    j = 0
         return image
 
+    def showBw(self):
+        plt.figure(figsize=(10, 10))
+        io.imshow(self.image, cmap='gray')
+        plt.show()
