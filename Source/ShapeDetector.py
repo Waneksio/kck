@@ -17,30 +17,31 @@ class ShapeDetector:
     areas = []
 
     def __init__(self, image):
-        self.image = image
+        self.image = self.wb_bw(image)
         self.findContours()
         self.removeTrashes()
+        self.findCentroid()
 
     def removeTrashes(self):
         for contour in self.contours:
             self.areas.append(cv2.contourArea(contour))
 
-        for i in range(len(self.areas)):
-            if self.areas[i] == max(self.areas):
-                self.areas.pop(i)
-                self.contours.pop(i)
-                break
+        #for i in range(len(self.areas)):
+            #if self.areas[i] == max(self.areas):
+                #self.areas.pop(i)
+                #self.contours.pop(i)
+                #break
 
         median = statistics.median(self.areas)
         deviation = statistics.stdev(self.areas)
         toDelete = []
 
-        for i in range(len(self.areas)):
-            if self.areas[i] < median - 0.1 * deviation:
-                toDelete.append(i)
+        # for i in range(len(self.areas)):
+            # if self.areas[i] < median - 0.5 * deviation:
+                # toDelete.append(i)
 
-            if self.areas[i] > median + 0.5 * deviation:
-                toDelete.append(i)
+            # if self.areas[i] > median + 2 * deviation:
+                # toDelete.append(i)
 
         while len(toDelete) != 0:
             temp = toDelete.pop()
@@ -69,6 +70,15 @@ class ShapeDetector:
                 cX = int(M["m10"] / M["m00"])
                 cY = int(M["m01"] / M["m00"])
                 self.centroids.append((cX, cY))
-                self.image[cY][cX] = 255
+                self.image[cY][cX] = 0
+        print(self.centroids)
 
+    def wb_bw(self, image):
+        for i in image:
+            for j in i:
+                if j == 255:
+                    j = 0
+                else:
+                    j = 0
+        return image
 
