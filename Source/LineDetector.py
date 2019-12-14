@@ -31,6 +31,7 @@ class LineDetector:
         self.lines = self.findLines(self.rotatedImage)
         self.linesImage = self.drawLines(self.rotatedImage)
         self.noLinesImage = self.removeLines(self.rotatedImage)
+        self.normalize(self.noLinesImage)
         self.rotatedAsFile()
 
     def findAngle(self):
@@ -153,6 +154,14 @@ class LineDetector:
         plt.figure(figsize=(10, 10))
         io.imshow(self.rotatedImage)
         plt.show()
+
+    def normalize(self, img):
+        for i in range(len(img)):
+            for j in range(len(img[i])):
+                if img[i][j] > 70:
+                    img[i][j] = 255
+                else:
+                    img[i][j] = 0
 
     def rotatedAsFile(self):
         cv2.imwrite("rotated.jpg", self.rotated)
